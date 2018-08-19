@@ -7,9 +7,9 @@
     "start": "node server.js",
     "debug": "node debug server.js",
     "nodemon": "nodemon -e js,json,yml",
-    "test": "eslint --fix . && NODE_ENV=test API_TOKEN=5CD4ED173E1C95FE763B753A297D5 nyc --check-coverage --lines 100 --functions 100 --branches 100 mocha --async-only app/**/*.test.js models/**/*.test.js",
-    "test:debug": "NODE_ENV=test API_TOKEN=5CD4ED173E1C95FE763B753A297D5 mocha debug app/**/*.test.js models/**/*.test.js",
-    "test:nolint": "NODE_ENV=test API_TOKEN=5CD4ED173E1C95FE763B753A297D5 mocha app/**/*.test.js models/**/*.test.js"
+    "test": "eslint --fix . && NODE_ENV=test nyc --check-coverage --lines 100 --functions 100 --branches 100 mocha --async-only app/**/*.test.js models/**/*.test.js",
+    "test:debug": "NODE_ENV=test mocha debug app/**/*.test.js models/**/*.test.js",
+    "test:nolint": "NODE_ENV=test mocha app/**/*.test.js models/**/*.test.js"
   },
   "repository": {
     "type": "git",
