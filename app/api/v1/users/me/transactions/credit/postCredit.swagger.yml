@@ -1,0 +1,63 @@
+ /v1/users/me/transactions/credit:
+    post:
+        tags: 
+            - Transaction
+        summary: Receive a Debit financial transaction
+        description: Receive a Debit financial transaction 
+        consumes:
+            - application/json
+            - application/x-www-form-urlencoded
+        produces:
+            - application/json
+        parameters:
+        -   name: body
+            in: body
+            required: true
+            schema:
+                type: object
+                required:
+                    - amount
+                properties:
+                    amount:
+                        type: number
+                        example: 1000.00
+        responses:
+            201:
+                description: Created
+                headers:
+                    Location:
+                        description: http://localhost:8080/api/v1/users/me/transactions/credit/6c84fb90-12c4-11e1-840d-7b25c5ee775a
+                        type: string
+                        format: uri
+                schema:
+                    type: object
+                    required:
+                        - _links
+                    properties:
+                        _links:
+                            type: object
+                            required:
+                                - self
+                            properties:
+                                self:
+                                    type: object
+                                    required:
+                                        - href
+                                    properties:
+                                        href:
+                                            type: string
+                                            format: uri
+                                            example: http://localhost:8080/api/v1/users/me/transactions/credit/6c84fb90-12c4-11e1-840d-7b25c5ee775a
+                                history:
+                                    type: object
+                                    required:
+                                        - href
+                                    properties:
+                                        href:
+                                            type: string
+                                            format: uri
+                                            example: http://localhost:8080/api/v1/users/me/transactions
+            400:
+                description: Bad Request
+            500:
+                description: Internal server error
