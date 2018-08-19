@@ -1,3 +1,9 @@
+#Install:
+
+* npm install
+* npm start
+* Open in browser: http://localhost:8080/api/docs/
+
 #Requirements:
 
 We are looking to build a money accounting system. The application should be a web service. It should not do any real “transactional” work, just emulate the financial transactions logic. No security is required. So don't worry about authentication.

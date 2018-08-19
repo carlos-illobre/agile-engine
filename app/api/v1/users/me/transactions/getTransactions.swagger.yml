@@ -1,7 +1,7 @@
 /v1/users/me/transactions:
     get:
         tags:
-            - transactions
+            - Transaction
         summary: Get the transactions history
         description: Get the transactions history
         produces:
@@ -14,7 +14,7 @@
                     required:
                         - transactions
                     properties:
-                        divisions:
+                        transactions:
                             type: array
                             items:
                                 type: object

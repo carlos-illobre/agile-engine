@@ -84,6 +84,7 @@ describe('POST api/v1/users/me/transactions/credit', function () {
                 'status': 400,
                 'statusText': 'Bad Request',
             },
+            message: 'validation error',
         })
 
         const newCount = await this.db.Transaction.count()

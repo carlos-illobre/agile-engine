@@ -15,6 +15,14 @@ module.exports = Router({mergeParams: true})
 
     try {
 
+        const amount = await req.db.Transaction.getAmount()
+
+        if (amount < req.body.amount) {
+            const error = new Error('Insuficient amount')
+            error.status = 422
+            throw error
+        }
+
         const transaction = await req.db.DebitTransaction.create(req.body)
 
         const location = req.base

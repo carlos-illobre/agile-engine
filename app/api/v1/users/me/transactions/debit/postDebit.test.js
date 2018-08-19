@@ -12,6 +12,8 @@ describe('POST api/v1/users/me/transactions/debit', function () {
 
     it('return 201 if the debit financial transaction was created', async function() {
         
+        await this.db.CreditTransaction.create({ amount: 10000 })
+
         const data = {
             amount: 1000.56,
         }
@@ -45,21 +47,6 @@ describe('POST api/v1/users/me/transactions/debit', function () {
 
     })
 
-    it('return 500 if internal error', async function() {
-        
-        delete this.db.DebitTransaction
-
-        const data = {
-            amount: 1000.56,
-        }
-
-        await request(this.app)
-        .post('/api/v1/users/me/transactions/debit')
-        .send(data)
-        .expect(500)
-
-    })
-
     it('return 400 if the request has not an amount', async function() {
 
         const originalCount = await this.db.Transaction.count()
@@ -84,6 +71,7 @@ describe('POST api/v1/users/me/transactions/debit', function () {
                 'status': 400,
                 'statusText': 'Bad Request',
             },
+            message: 'validation error',
         })
 
         const newCount = await this.db.Transaction.count()
@@ -92,4 +80,25 @@ describe('POST api/v1/users/me/transactions/debit', function () {
 
     })
 
+    it('return 422 and refuse a transaction which leads to negative amount within the system,', async function() {
+
+        await this.db.CreditTransaction.create({ amount: 100 })
+
+        const originalCount = await this.db.Transaction.count()
+
+        await request(this.app)
+        .post('/api/v1/users/me/transactions/debit')
+        .send({ amount: 1000 })
+        .expect(422, { 
+            message: 'Insuficient amount',
+            error: {
+                status: 422,
+            },
+        })
+
+        const newCount = await this.db.Transaction.count()
+
+        expect(originalCount).to.equals(newCount)
+
+    })
 })

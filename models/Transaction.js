@@ -1,8 +1,9 @@
 const uuidV1 = require('uuid/v1')
+const _ = require('lodash')
 
 const history = []
 
-module.exports = class Transaction {
+class Transaction {
 
     constructor({ type, amount }) {
         this.id = uuidV1()
@@ -32,4 +33,18 @@ module.exports = class Transaction {
         return history.length
     }
 
+    static async getAmount() {
+        return _.chain(history)
+        .map(({ type, amount }) => type == Transaction.types.credit ? amount : -amount)
+        .sum()
+        .value()
+    }
+
 }
+
+Transaction.types = Object.freeze({
+    debit: 'debit',
+    credit: 'credit',
+})
+
+module.exports = Transaction

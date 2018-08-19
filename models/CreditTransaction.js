@@ -3,7 +3,7 @@ const Transaction = require('./Transaction.js')
 module.exports = class CreditTransaction extends Transaction {
 
     constructor({ amount }) {
-        super({ type: 'credit', amount })
+        super({ type: Transaction.types.credit, amount })
     }
 
     static async create({ amount }) {

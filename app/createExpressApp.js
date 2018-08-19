@@ -25,5 +25,8 @@ module.exports = async ({database, logger}) => express()
 .use((error, req, res, next) => {
     error.status = error.status || 500
     logger.error(error, error)
-    res.status(error.status).json({ error })
+    res.status(error.status).json({
+        message: error.message,
+        error,
+    })
 })
