@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carlos-illobre/workast.git"
+    "url": "git+https://github.com/carlos-illobre/agile-engine.git"
   },
   "author": "Carlos Illobre",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/carlos-illobre/workast/issues"
+    "url": "https://github.com/carlos-illobre/agile-engine/issues"
   },
-  "homepage": "https://github.com/carlos-illobre/workast#readme",
+  "homepage": "https://github.com/carlos-illobre/agile-engine#readme",
   "nyc": {
     "include": [
       "app/**/*.js",
