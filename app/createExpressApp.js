@@ -12,6 +12,7 @@ module.exports = async ({database, logger}) => express()
     msg: '{{res.statusCode}} {{req.method}} {{req.url}} {{res.responseTime}}ms',
     meta: false,
 }))
+.use(express.static('./public'))
 .use(bodyParser.urlencoded({extended: true}))
 .use(bodyParser.json())
 .use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, true))

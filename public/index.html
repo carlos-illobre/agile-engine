@@ -1,0 +1,30 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+<script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+<script src="app.js"></script>
+<script src="TransactionController.js"></script>
+<script src="transactionService.js"></script>
+</head>
+<body ng-app="app">
+    <section ng-controller="TransactionController as controller">
+        <h1>History</h1>
+        <accordion>
+            <accordion-group heading="{{transaction | transactionSummary}}" ng-repeat="transaction in controller.transactions" ng-class="transaction.type">
+                <dl>
+                    <dt>Id</dt>
+                    <dd>{{transaction.id}}</dd>
+                    <dt>Type</dt>
+                    <dd>{{transaction.type}}</dd>
+                    <dt>Amount</dt>
+                    <dd>{{transaction.amount}}</dd>
+                    <dt>Effective Date</dt>
+                    <dd>{{transaction.effectiveDate}}</dd>
+                </dl>
+            </accordion-group>
+        </accordion>
+    </section>
+</body>
+</html>
