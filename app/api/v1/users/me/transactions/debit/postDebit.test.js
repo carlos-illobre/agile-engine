@@ -12,7 +12,7 @@ describe('POST api/v1/users/me/transactions/debit', function () {
 
     it('return 201 if the debit financial transaction was created', async function() {
         
-        await this.db.CreditTransaction.create({ amount: 10000 })
+        await this.db.Transaction.createCredit({ amount: 10000 })
 
         const data = {
             amount: 1000.56,
@@ -41,15 +41,30 @@ describe('POST api/v1/users/me/transactions/debit', function () {
             },
         })
 
-        const transaction = await this.db.Transaction.findById(id)
+        const transactions = await this.db.Transaction.findAll()
 
-        expect(_.pick(transaction, Object.keys(data))).to.deep.equal(data)
+        expect(_.pick(transactions.pop(), Object.keys(data))).to.deep.equal(data)
+
+    })
+
+    it('return 500 if internal error', async function() {
+        
+        delete this.db.Transaction
+
+        const data = {
+            amount: 1000.56,
+        }
+
+        await request(this.app)
+        .post('/api/v1/users/me/transactions/debit')
+        .send(data)
+        .expect(500)
 
     })
 
     it('return 400 if the request has not an amount', async function() {
 
-        const originalCount = await this.db.Transaction.count()
+        const originalTransactions = await this.db.Transaction.findAll()
 
         await request(this.app)
         .post('/api/v1/users/me/transactions/debit')
@@ -71,34 +86,31 @@ describe('POST api/v1/users/me/transactions/debit', function () {
                 'status': 400,
                 'statusText': 'Bad Request',
             },
-            message: 'validation error',
         })
 
-        const newCount = await this.db.Transaction.count()
+        const newTransactions = await this.db.Transaction.findAll()
 
-        expect(originalCount).to.equals(newCount)
+        expect(originalTransactions).to.deep.equals(newTransactions)
 
     })
 
     it('return 422 and refuse a transaction which leads to negative amount within the system,', async function() {
 
-        await this.db.CreditTransaction.create({ amount: 100 })
+        await this.db.Transaction.createCredit({ amount: 100 })
 
-        const originalCount = await this.db.Transaction.count()
+        const originalTransactions = await this.db.Transaction.findAll()
 
         await request(this.app)
         .post('/api/v1/users/me/transactions/debit')
         .send({ amount: 1000 })
         .expect(422, { 
             message: 'Insuficient amount',
-            error: {
-                status: 422,
-            },
         })
 
-        const newCount = await this.db.Transaction.count()
+        const newTransactions = await this.db.Transaction.findAll()
 
-        expect(originalCount).to.equals(newCount)
+        expect(originalTransactions).to.deep.equals(newTransactions)
 
     })
+
 })

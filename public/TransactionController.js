@@ -1,7 +1,7 @@
 angular.module('app')
 .controller('TransactionController', function(transactionService) {
 
-    var vm = this
+    const vm = this
 
     transactionService.getTransactions().then(function(transactions) {
         vm.transactions = transactions

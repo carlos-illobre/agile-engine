@@ -10,11 +10,11 @@ describe('Transaction', function() {
 
     it('findAll', async function() {
 
-        const creditTransaction = await this.db.CreditTransaction.create({
+        const creditTransaction = await this.db.Transaction.createCredit({
             amount: 1000,
         })
 
-        const debitTransaction = await this.db.DebitTransaction.create({
+        const debitTransaction = await this.db.Transaction.createDebit({
             amount: 1000,
         })
 
@@ -30,16 +30,16 @@ describe('Transaction', function() {
     it('getAmount', async function() {
 
         await Promise.all([
-            this.db.CreditTransaction.create({
+            this.db.Transaction.createCredit({
                 amount: 4000,
             }),
-            this.db.DebitTransaction.create({
+            this.db.Transaction.createDebit({
                 amount: 3000,
             }),
-            this.db.CreditTransaction.create({
+            this.db.Transaction.createCredit({
                 amount: 2000,
             }),
-            this.db.DebitTransaction.create({
+            this.db.Transaction.createDebit({
                 amount: 1000,
             }),
         ])

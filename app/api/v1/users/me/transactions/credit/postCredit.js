@@ -15,7 +15,7 @@ module.exports = Router({mergeParams: true})
 
     try {
 
-        const transaction = await req.db.CreditTransaction.create(req.body)
+        const transaction = await req.db.Transaction.createCredit(req.body)
 
         const location = req.base
             + req.originalUrl.replace(new RegExp(req.originalUrl.split('/').pop() + '$'), transaction.id)

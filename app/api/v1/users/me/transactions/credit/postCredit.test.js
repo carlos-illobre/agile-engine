@@ -39,7 +39,7 @@ describe('POST api/v1/users/me/transactions/credit', function () {
             },
         })
 
-        const transaction = await this.db.Transaction.findById(id)
+        const [transaction] = await this.db.Transaction.findAll()
 
         expect(_.pick(transaction, Object.keys(data))).to.deep.equal(data)
 
@@ -47,7 +47,7 @@ describe('POST api/v1/users/me/transactions/credit', function () {
 
     it('return 500 if internal error', async function() {
         
-        delete this.db.CreditTransaction
+        delete this.db.Transaction
 
         const data = {
             amount: 1000.56,
@@ -62,7 +62,7 @@ describe('POST api/v1/users/me/transactions/credit', function () {
 
     it('return 400 if the request has not an amount', async function() {
 
-        const originalCount = await this.db.Transaction.count()
+        const originalTransactions = await this.db.Transaction.findAll()
 
         await request(this.app)
         .post('/api/v1/users/me/transactions/credit')
@@ -84,12 +84,11 @@ describe('POST api/v1/users/me/transactions/credit', function () {
                 'status': 400,
                 'statusText': 'Bad Request',
             },
-            message: 'validation error',
         })
 
-        const newCount = await this.db.Transaction.count()
+        const newTransactions = await this.db.Transaction.findAll()
 
-        expect(originalCount).to.equals(newCount)
+        expect(originalTransactions).to.deep.equals(newTransactions)
 
     })
 

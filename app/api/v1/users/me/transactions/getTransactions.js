@@ -18,4 +18,5 @@ module.exports = Router({mergeParams: true})
     })
 
     res.json({ transactions: response })
+
 })

@@ -14,10 +14,10 @@ describe('GET api/v1/users/me/transactions', function () {
     it('return 200 and the transactions history', async function() {
 
         const transactions = await Promise.all(
-            _.range(1, 5)
+            _.range(5)
             .map(n => n % 2 
-                ? this.db.CreditTransaction.create({ amount: n * 1000 })
-                : this.db.DebitTransaction.create({ amount: n * 1000 })
+                ? this.db.Transaction.createDebit({ amount: 1000 - n })
+                : this.db.Transaction.createCredit({ amount: 1000 - n })
             )
         )
 

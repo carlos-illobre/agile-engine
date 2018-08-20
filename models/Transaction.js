@@ -2,8 +2,9 @@ const uuidV1 = require('uuid/v1')
 const _ = require('lodash')
 
 const history = []
+let index = 1
 
-class Transaction {
+module.exports = class Transaction {
 
     constructor({ type, amount }) {
         this.id = uuidV1()
@@ -17,34 +18,39 @@ class Transaction {
         return this
     }
 
-    static async findAll() {
-        return history.map(item => item)
+    static async createDebit({ amount }) {
+        const order = index++
+        const total = await Transaction.getAmount()
+        if (amount > total) {
+            const error = new Error('Insuficient amount')
+            error.type = 'DebitError'
+            throw error
+        }
+        const transaction = new Transaction({ type: 'debit', amount })
+        transaction.order = order
+        return transaction.save()
     }
 
-    static async findById(id) {
-        return history.find(item => item.id == id)
+    static async createCredit({ amount }) {
+        const order = index++
+        const transaction = new Transaction({ type: 'credit', amount })
+        transaction.order = order
+        return transaction.save()
+    }
+
+    static async findAll() {
+        return _.orderBy(history, 'order', 'asc')
     }
 
     static async deleteMany() {
         history.length = 0
     }
 
-    static async count() {
-        return history.length
-    }
-
     static async getAmount() {
         return _.chain(history)
-        .map(({ type, amount }) => type == Transaction.types.credit ? amount : -amount)
+        .map(({ type, amount }) => type == 'credit' ? amount : -amount)
         .sum()
         .value()
     }
 
 }
-
-Transaction.types = Object.freeze({
-    debit: 'debit',
-    credit: 'credit',
-})
-
-module.exports = Transaction
