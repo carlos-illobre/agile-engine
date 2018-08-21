@@ -18,6 +18,16 @@ We are looking to build a money accounting system. The application should be a w
 * It should be possible to launch each project in one-line-command. Please provide README.md
 * Our company follows OpenAPI principles so you can find the predefined API. It contains only model definition, please design REST API that fits application needs.
 
+```
+transaction {
+  id: {string} uuid,
+  type: {string} 'credit'|'debit',
+  amount: {number} two decimals,
+  effectiveDate: {string} date-time
+}
+```
+
+
 # UX/UI requirements:
 * We need a simple UI for this application.
 * UI should display the transactions history list only. No other operation is required.
